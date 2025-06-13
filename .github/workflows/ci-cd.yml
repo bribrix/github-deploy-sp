@@ -1,42 +1,42 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline   #Nom du workflow
 
-on:
+on:                    #exécute automatiquement à chaque git push sur la branche main
   push:
     branches: [ main ]
 
-jobs:
-  build-and-deploy:
+jobs:                  #Nom du job principal : build-and-deploy 
+  build-and-deploy:    #exécuté sur une machine virtuelle Ubuntu fournie par GitHub
     runs-on: ubuntu-latest
 
-    steps:
+    steps:             #Récupération du code source du dépôt dans l'environnement GitHub Actions
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Set up Python   # Installation de Python 3.11 pour exécution des tests et scripts
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
 
-    - name: Install dependencies
+    - name: Install dependencies    #Installation des dépendances Python 
       run: |
         pip install -r requirements.txt
 
-    - name: Set PYTHONPATH
+    - name: Set PYTHONPATH    #Ajout du dossier courant au PYTHONPATH pour que les imports fonctionnent bien lors des tests 
       run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
-    - name: Run tests
+    - name: Run tests         #Exécution des tests unitaires avec pytest, dans le dossier test/
       run: |
         pytest test/
 
-    - name: Build Docker image
+    - name: Build Docker image   #Construction de l’image Docker nommée fastapi-app à partir du Dockerfile présent à la racine 
       run: docker build -t fastapi-app .
 
-    - name: Login to Azure
+    - name: Login to Azure       #Connexion à Azure  
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy to Azure Web App
+    - name: Deploy to Azure Web App   # Déploiement automatique de l'image Docker fastapi-app sur une Azure Web App for Containers nommée "AppTraining"
       uses: azure/webapps-deploy@v2
       with:
         app-name: "AppTraining"
