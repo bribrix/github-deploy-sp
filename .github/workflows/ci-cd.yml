@@ -40,4 +40,4 @@ jobs:                  #Nom du job principal : build-and-deploy
       uses: azure/webapps-deploy@v2
       with:
         app-name: "AppTraining"
-        images: "fastapi-app" 
+        images: acrregistrybriac.azurecr.io/fastapi-app:v1
