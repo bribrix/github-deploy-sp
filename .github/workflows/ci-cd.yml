@@ -41,13 +41,17 @@ jobs:                  #Nom du job principal : build-and-deploy
       run: |
         az acr login --name $ACR_NAME
 
-    - name: Build and tag Docker image  #Construction de l’image taguée avec SHA du commit
-      run: |
-        docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }} .
+    - name: Set image tag from commit SHA
+      id: vars
+      run: echo "TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-    - name: Push image to ACR
+    - name: Build Docker image with commit SHA tag 
       run: |
-        docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }}
+        docker build -t $ACR_NAME.azurecr.io/fastapi-app:${TAG} .
+
+    - name: Push Docker image to ACR
+      run: |
+        docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:${TAG}
 
     - name: Deploy to Azure Web App   # Déploiement automatique de l'image Docker fastapi-app sur une Azure Web App for Containers nommée "AppTraining"
       uses: azure/webapps-deploy@v2
