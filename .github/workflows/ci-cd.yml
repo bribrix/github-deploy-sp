@@ -4,6 +4,10 @@ on:                    #exécute automatiquement à chaque git push sur la branc
   push:
     branches: [ main ]
 
+env:
+  ACR_NAME: acrregistrybriac
+  IMAGE_NAME: fastapi-app
+
 jobs:                  #Nom du job principal : build-and-deploy 
   build-and-deploy:    #exécuté sur une machine virtuelle Ubuntu fournie par GitHub
     runs-on: ubuntu-latest
@@ -28,13 +32,22 @@ jobs:                  #Nom du job principal : build-and-deploy
       run: |
         pytest test/
 
-    - name: Build Docker image   #Construction de l’image Docker nommée fastapi-app à partir du Dockerfile présent à la racine 
-      run: docker build -t fastapi-app .
-
     - name: Login to Azure       #Connexion à Azure  
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Docker login to ACR
+      run: |
+        az acr login --name $ACR_NAME
+
+    - name: Build and tag Docker image  #Construction de l’image taguée avec SHA du commit
+      run: |
+        docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }} .
+
+    - name: Push image to ACR
+      run: |
+        docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }}
 
     - name: Deploy to Azure Web App   # Déploiement automatique de l'image Docker fastapi-app sur une Azure Web App for Containers nommée "AppTraining"
       uses: azure/webapps-deploy@v2
