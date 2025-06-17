@@ -6,4 +6,4 @@ client = TestClient(app)
 def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello, CI/CD 2"}
+    assert response.json() == {"message": "Hello, CI/CD, I am here to see if everything is functionning"}
