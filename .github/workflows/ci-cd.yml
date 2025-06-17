@@ -47,7 +47,7 @@ jobs:                  #Nom du job principal : build-and-deploy
 
     - name: Build Docker image with commit SHA tag 
       run: |
-        docker build -t $ACR_NAME.azurecr.io/fastapi-app:${TAG} .
+        docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:${TAG} .
 
     - name: Push Docker image to ACR
       run: |
@@ -57,4 +57,4 @@ jobs:                  #Nom du job principal : build-and-deploy
       uses: azure/webapps-deploy@v2
       with:
         app-name: "AppTraining"
-        images: acrregistrybriac.azurecr.io/fastapi-app:v1
+        images: $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ env.TAG }}
