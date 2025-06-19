@@ -3,7 +3,10 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_read_root():
-    response = client.get("/")
+def test_submit_form():
+    response = client.post(
+        "/form",
+        data={"name":"Alice"},
+        headers={"Content-Type": "application/x-www-urlencoded"})
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello, CI/CD, I'd like to see if everything is functionning"}
+    assert response.json() == {"message": "Hello, Alice"}
