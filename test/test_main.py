@@ -6,8 +6,7 @@ client = TestClient(app)
 def test_submit_form():
     response = client.post(
         "/form",
-        data={"name": "Alice"},
-        headers={"Content-Type": "application/x-www-form-urlencoded"}
+        json ={"name": "Alice"},
     )
     assert response.status_code == 200
     assert response.json() == {"message": "Hello, Alice!"}
