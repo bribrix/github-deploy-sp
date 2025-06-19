@@ -12,7 +12,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class FormData(BaseModel):
+    name: str
+
 @app.post("/form")
-def receive_form(name: str = Form(...)):
-    print(f"Received: {name}")
-    return {"message": f"Hello, {name}!"}
+def receive_form(data: FormData):
+    print(f"Received: {data.name}")
+    return {"message": f"Hello, {data.name}!"}
