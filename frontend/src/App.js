@@ -5,7 +5,7 @@ import FormComponent from './FormComponent';
 function App() { //s'affiche dans le navigateur
   return (
     <div className="App">
-      <h1>React Form</h1>
+      <h1>Predictive medicine Form</h1>
       <FormComponent />
     </div>
   );

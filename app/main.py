@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import json
 
 app = FastAPI()
 
@@ -13,9 +14,21 @@ app.add_middleware(
 )
 
 class FormData(BaseModel):
-    name: str
+    age: int
+    gender: int
+    cp: int
+    bp: int
+    cholesterol: int
+    fbs: int
+    ecg: int
+    mhr: int
+    exang: int
+    oldpeak: float
+    slope: int
+    ca: int
+    thal: int
 
 @app.post("/form")
 def receive_form(data: FormData):
-    print(f"Received: {data.name}")
-    return {"message": f"Hello, {data.name}!"}
+    print(json.dumps(data.dict(), indent=2))
+    return {"message": f"Data received"}
