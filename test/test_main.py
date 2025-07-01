@@ -6,7 +6,7 @@ client = TestClient(app)
 def test_predict_valid_input():
     response = client.post(
         "/predict",
-        payload ={
+        json = {
             "age": 44,
             "sex": 0,
             "cp": 3,
