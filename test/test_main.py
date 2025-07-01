@@ -3,18 +3,18 @@ from app.main import app
 
 client = TestClient(app)
 
-def test_submit_form():
+def test_predict_valid_input():
     response = client.post(
-        "/form",
-        json ={
+        "/predict",
+        payload ={
             "age": 44,
-            "gender": 0,
+            "sex": 0,
             "cp": 3,
-            "bp": 5,
-            "cholesterol": 3,
+            "trestbps": 5,
+            "chol": 3,
             "fbs": 1,
-            "ecg": 1,
-            "mhr": 3,
+            "restecg": 1,
+            "thalach": 3,
             "exang": 0,
             "oldpeak": 1.5,
             "slope": 1,
@@ -22,5 +22,9 @@ def test_submit_form():
             "thal": 6
         }
     )
+
     assert response.status_code == 200
-    assert response.json() == {"message": "Data received"}
+    # Structure de la réponse
+    json_data = response.json()
+    assert "message" in json_data
+    assert "Prediction is :" in json_data["message"]
