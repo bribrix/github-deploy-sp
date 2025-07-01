@@ -28,3 +28,24 @@ def test_predict_valid_input():
     json_data = response.json()
     assert "message" in json_data
     assert "Prediction is :" in json_data["message"]
+
+def test_predict_missing_field():
+    payload = {
+        "age": 63,
+        # "sex" est manquant volontairement
+        "cp": 3,
+        "trestbps": 145,
+        "chol": 233,
+        "fbs": 1,
+        "restecg": 0,
+        "thalach": 150,
+        "exang": 0,
+        "oldpeak": 2.3,
+        "slope": 0,
+        "ca": 0,
+        "thal": 1
+    }
+
+    response = client.post("/predict", json=payload)
+
+    assert response.status_code == 422  # erreur de validation Pydantic
