@@ -2,33 +2,33 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function FormComponent() {
-  const [age, setAge] = useState('');                 //useState = fonct° react pour garder des valeurs en mémoire = initialisat° de vars
-  const [gender, setGender] = useState('');
-  const [cp, setCP] = useState('');
-  const [bp, setBP] = useState('');
-  const [cholesterol, setCholesterol] = useState('');
-  const [fbs, setFbs] = useState('');
-  const [ecg, setEcg] = useState('');
-  const [mhr, setMhr] = useState('');
-  const [exang, setExang] = useState('');
-  const [oldpeak, setOldpeak] = useState('');
-  const [slope, setSlope] = useState('');
-  const [ca, setCa] = useState('');
-  const [thal, setThal] = useState('');
-  const [response, setResponse] = useState('');
+    const [age, setAge] = useState('');                 //useState = utiliser les états entrés dans le form
+    const [gender, setGender] = useState('');
+    const [cp, setCP] = useState('');
+    const [bp, setBP] = useState('');
+    const [cholesterol, setCholesterol] = useState('');
+    const [fbs, setFbs] = useState('');
+    const [ecg, setEcg] = useState('');
+    const [mhr, setMhr] = useState('');
+    const [exang, setExang] = useState('');
+    const [oldpeak, setOldpeak] = useState('');
+    const [slope, setSlope] = useState('');
+    const [ca, setCa] = useState('');
+    const [thal, setThal] = useState('');
+    const [response, setResponse] = useState('');
 
   const handleSubmit = async (e) => {                                           //fonct° lorsque clic sur bouton Submit
     e.preventDefault();                                                         //empêche navigateur de recharger la page
     try {                                                                       //envoi des données à FastApi : 
-        const res = await axios.post('http://localhost:8000/form', {              // Post à URL du backend FastAPI
+        const res = await axios.post('http://localhost:8000/predict', {            // Post à URL du backend FastAPI
             age: Number(age), 
-            gender: Number(gender), 
+            sex: Number(gender), 
             cp: Number(cp), 
-            bp: Number(bp),
-            cholesterol: Number(cholesterol),
+            trestbps: Number(bp),
+            chol: Number(cholesterol),
             fbs: Number(fbs),
-            ecg: Number(ecg),
-            mhr: Number(mhr),
+            restecg: Number(ecg),
+            thalach: Number(mhr),
             exang: Number(exang),
             oldpeak: Number(oldpeak),
             slope: Number(slope),
@@ -41,9 +41,9 @@ export default function FormComponent() {
         console.error(err);
         setResponse('An error occurred.');
     }
-  };
+};
 
-  return (
+return (
     <form onSubmit={handleSubmit}>
         <label htmlFor="age">Enter your age</label>
         <br/>
@@ -203,8 +203,8 @@ export default function FormComponent() {
             <option value="7">Reversable defect</option>
         </select>
         <br /><br />
-      <button type="submit">Submit</button>
-      {response && <p>{response}</p>}
+        <button type="submit">Obtain my prediction</button>
+        {response && <p>{response}</p>} 
     </form>
-  );
+    );
 }

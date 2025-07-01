@@ -1,3 +1,5 @@
 venv/
 app/__pycache__/
 profile.publishings
+node_modules
+*.pyc
