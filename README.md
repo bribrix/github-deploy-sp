@@ -6,6 +6,9 @@ School/Formation
 App web permettant pour la prédiction du risque d'attaque cardiaque à partir de données physiologiques.  
 Frontend React + API REST FastAPI + modèle Random Forest (Accuracy 90%) + architectecture dockerisé + déploiement automatisé via Azure.
 
+![image](https://github.com/user-attachments/assets/0d102294-4f76-4b19-b444-337449574dd1)
+
+
 ---
 
 ## 🧠 Modèle Machine Learning
